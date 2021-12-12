@@ -1,47 +1,56 @@
 public class PrintingState implements IPrinterState{
-    public void DoPrint(Printer p, int i) {
-        int counter;
-        if( p.context.method.getClass()==DoubleSidedPrinting.class)
-        {
-            counter=2;
+    Thread thread;
+    public  PrintingState(Printer p, int i) {
+        Runnable runnable =
+          () -> {
 
-        }
-        else
-        {
-            counter=1;
-        }
-        while(i>0)
-        {
+                int counter;
+                int j=i;
+                if (p.context.method.getClass() == DoubleSidedPrinting.class) {
+                    counter = 2;
 
-            try {
-                if(p.InkFill <10 || p.Papers<1)
-                {
-                    System.out.println("Printer is empty please Refill");
-                    p.setState(new EmptyState());
-                    break;
+                } else {
+                    counter = 1;
+                }
+                while (j > 0) {
+
+                    try {
+                        if (p.InkFill < 10 || p.Papers < 1) {
+                            System.out.println("Printer is empty please Refill");
+                            break;
+
+                        }
+                        System.out.println(j + " pages left");
+                        Thread.sleep(500);
+
+                            j -= counter;
+
+
+
+                        p.InkFill -= 10;
+                        p.Papers -= 1;
+
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+
 
                 }
-                System.out.println(i+ " pages left");
-                Thread.sleep(500);
-                i-=counter;
-                p.InkFill-=10;
-                p.Papers-=1;
+                if (p.InkFill >= 10 && p.Papers >= 1) {
+                    p.setState(new ReadyState());
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                } else {
+                    p.setState(new EmptyState());
+                }
+                if(j==0)
+                {
+                    System.out.println("Done");
+                }
 
+            };
 
-        }
-        if(p.InkFill>=10 && p.Papers>=1)
-        {
-            p.setState(new ReadyState());
-        }
-        else
-        {
-            p.setState(new EmptyState());
-        }
-
+        thread=new Thread(runnable);
+        thread.start();
     }
 
     @Override
@@ -53,6 +62,7 @@ public class PrintingState implements IPrinterState{
     @Override
     public boolean cancel(Printer p) {
         System.out.println("Canceling...");
+        thread.interrupt();
         if(p.InkFill>=10 && p.Papers>0)
         {
             p.setState(new ReadyState());

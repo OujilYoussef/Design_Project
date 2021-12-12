@@ -1,10 +1,8 @@
 public class ReadyState implements IPrinterState {
     @Override
     public int print(Printer p,int n) {
-        PrintingState current=new PrintingState();
+        PrintingState current=new PrintingState(p,n);
         p.setState(current);
-
-        current.DoPrint(p,n);
         return 0;
 
     }
