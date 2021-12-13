@@ -36,16 +36,17 @@ public class PrintingState implements IPrinterState{
 
 
                 }
+              if(j<=0)
+              {
+                  System.out.println("Done");
+              }
                 if (p.InkFill >= 10 && p.Papers >= 1) {
                     p.setState(new ReadyState());
 
                 } else {
                     p.setState(new EmptyState());
                 }
-                if(j==0)
-                {
-                    System.out.println("Done");
-                }
+
 
             };
 

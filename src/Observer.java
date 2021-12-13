@@ -1,3 +1,3 @@
 public interface Observer {
-     void update(int val);
+     void update(IPrinterState state);
 }
