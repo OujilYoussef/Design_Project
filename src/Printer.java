@@ -6,7 +6,7 @@ public class Printer extends Observable{
     public PrinterContext context;
     private static Printer printer;
 
-    public static Printer getPrinter()
+    public synchronized static Printer getPrinter()
     {
         if(printer==null)
         {

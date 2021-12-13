@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class ImprimanteView {
+public class ImprimanteView implements Observer{
 
 	private JFrame frame;
 	private JTextField pathTextField;
@@ -20,25 +20,20 @@ public class ImprimanteView {
 	private JLabel lblDe;
 	private JLabel lblA;
 	private JButton btnImprimer;
-	private static Printer imprimante;
+	private  Printer imprimante;
 	private JLabel lblNewLabel;
 	private JButton btnEncre;
 
 	public static void main(String[] args) {
-		imprimante = Printer.getPrinter();
-		
-		ImprimanteView view = new ImprimanteView(imprimante);
-		ImprimanteView view1 = new ImprimanteView(imprimante);
-		
-		while(true) {
-			view.lblNewLabel.setText("Imprimante: " + imprimante.getState().getClass().getName());
-			view1.lblNewLabel.setText("Imprimante: " + imprimante.getState().getClass().getName());
-		}
+		ImprimanteView view1 = new ImprimanteView();
+		ImprimanteView view2 = new ImprimanteView();
+
 	}
 	
 
-	public ImprimanteView(Printer imprimante) {
-		ImprimanteView.imprimante = imprimante;
+	public ImprimanteView() {
+		this.imprimante = Printer.getPrinter();
+		imprimante.register(this);
 		initialize();
 	}
 
@@ -173,5 +168,9 @@ public class ImprimanteView {
 		
 		frame.setVisible(true);
 	}
-	
+
+	@Override
+	public void update(IPrinterState state) {
+		lblNewLabel.setText("Imprimante: " + state.getClass().getName());
+	}
 }
