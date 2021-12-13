@@ -1,5 +1,6 @@
 public class Printer extends Observable{
-    public int InkFill;
+    
+	public int InkFill;
     public int Papers;
     private IPrinterState state;
     public PrinterContext context;
@@ -33,15 +34,15 @@ public class Printer extends Observable{
 
       return this.state.print(this,n);
     }
-    public void cancel()
+    public boolean cancel()
 
     {
-        this.state.cancel(this);
+        return this.state.cancel(this);
     }
-    public void refill()
+    public boolean refill()
 
     {
 
-        this.state.refill(this);
+        return this.state.refill(this);
     }
 }

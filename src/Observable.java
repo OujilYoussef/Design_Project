@@ -1,9 +1,10 @@
-import javax.print.attribute.standard.PrinterState;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Observable {
-    List<Observer> observers=new ArrayList<>();
+    
+	List<Observer> observers=new ArrayList<>();
+    
     public void register(Observer observer)
     {
         observers.add(observer);

@@ -26,8 +26,8 @@ public class PrintingState implements IPrinterState{
                             j -= counter;
 
 
-
-                        p.InkFill -= 10;
+                            //10 gets used up super fast
+                        p.InkFill -= 1;
                         p.Papers -= 1;
 
                     } catch (InterruptedException e) {
